@@ -1,7 +1,14 @@
-.status.error{
-    border: 2px solid red;
+.status{
     margin-bottom: 10px;
     padding: 10px;
+}
+
+.status.error{
+	border: 2px solid #ff0000;
+}
+
+.status.success{
+	border: 2px solid #008000;
 }
 
 .page-admin {
@@ -19,22 +26,61 @@
 	    -ms-flex: 2 0;
 	        flex: 2 0;
 	background-color: #efefef;
-    padding: 20px;
+    padding: 20px 0;
 }
 
 .page-admin .main-block{
 	-webkit-box-flex: 8;
 	    -ms-flex: 8 0;
 	        flex: 8 0;
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: flex;
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
-        -ms-flex-flow: row wrap;
-            flex-flow: row wrap;
-    -webkit-box-align: baseline;
-        -ms-flex-align: baseline;
-            align-items: baseline;
     padding: 0px 20px;
+}
+
+.page-admin .side .menu{
+	padding-left: 0;
+}
+
+.page-admin .side .menu > li{
+	list-style: none;
+    border-bottom: 1px solid;
+    padding: 10px;
+}
+
+.page-admin .side .menu > li a{
+	color: #000;
+}
+
+.page-admin .side .menu > li a:hover{
+	color: #e45446;
+}
+
+.page-admin .categories{
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.page-admin .categories tr td,
+.page-admin .categories tr th{
+	border: 1px solid;
+	padding: 10px;
+}
+
+.custom-form.category{
+	width: 400px;
+}
+
+.custom-form.category input{
+	margin-bottom: 5px;
+}
+
+.custom-form.category .custom-form__textarea{
+	width: 305px;
+	color: #787b7f;	
+	padding: 15px 20px;
+}
+
+
+.page-admin .status{
+	width: 305px;
+    text-align: center;
 }

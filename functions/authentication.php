@@ -2,8 +2,6 @@
 
 namespace functions;
 
-include $_SERVER['DOCUMENT_ROOT'] . '/functions/users.php';
-
 /**
  * Check username and password
  * @return boolean
@@ -14,6 +12,7 @@ function authenticationCheck(): bool
 
     for ($i = 0; $i < count($users); $i++) {
         if ($users[$i]['email'] === $_POST['email'] && password_verify($_POST['password'], $users[$i]['password'])) {
+            $_SESSION['auth']   = true;
             $_SESSION['userId'] = $users[$i]['id'];
             setcookie("login", $users[$i]['email'], time() + 60 * 60 * 24 * 30, '/');
 
@@ -28,14 +27,9 @@ namespace functions;
 
 /**
  * Cookies and session variables for authentication
- * @param  bool   $isAuth
  */
-function sessionAuthentication(bool $isAuth)
+function sessionAuthentication()
 {
-    if ($isAuth && !isset($_SESSION['auth'])) {
-        $_SESSION['auth'] = true;
-    }
-
     if (isset($_GET['login']) && $_GET['login'] == 'no' && isset($_SESSION['auth'])) {
         unset($_SESSION['auth']);
     }
@@ -48,8 +42,17 @@ function sessionAuthentication(bool $isAuth)
         setcookie("login", $_COOKIE['login'], time() + 60 * 60 * 24 * 30, '/');
     }
 
-    if(!isset($_SESSION['auth']) && preg_match('#^/admin#', $_SERVER['REQUEST_URI'])){
-        header("Location: /");
+    if (!isset($_SESSION['auth']) && preg_match('#^/admin/\w+#', $_SERVER['REQUEST_URI'])) {
+        header("Location: /admin/");
         exit;
     }
+}
+
+/**
+ * Check if the user is authorized
+ * @return boolean
+ */
+function isAuth(): bool
+{
+    return isset($_SESSION['auth']);
 }
