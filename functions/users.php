@@ -5,21 +5,54 @@ namespace functions;
 include_once $_SERVER['DOCUMENT_ROOT'] . '/functions/connectDB.php';
 
 /**
- * Receive user data for authentication
- * @return array $result
+ * Check if the user exists
+ * @param  string $email
+ * @param  string $password
+ * @return boolean
  */
-function getAllUSersForAuthentication(): array
+function ifUserExists(string $email, string $password): bool
 {
-    $result    = [];
-    $dbConnect = connectDB();
+    $passwordHash = '';
+    $dbConnect    = connectDB();
 
-    $smtm = $dbConnect->query('SELECT id, email, password FROM users');
+    $smtm = $dbConnect->prepare("SELECT password FROM users WHERE email = :email");
 
-    $result = $smtm->fetchAll(\PDO::FETCH_ASSOC);
+    $smtm->bindParam(':email', $email, \PDO::PARAM_STR);
+    $smtm->execute();
+
+    foreach ($smtm->fetchAll(\PDO::FETCH_ASSOC) as $row) {
+        $passwordHash = $row['password'];
+    }
 
     $dbConnect = null;
 
-    return $result;
+    return password_verify($password, $passwordHash);
+}
+
+/**
+ * Get current user id
+ * @param  string $email
+ * @return integer $userId
+ */
+function getCurrentUserId(string $email): int
+{
+    $userId    = '';
+    $dbConnect = connectDB();
+
+    $smtm = $dbConnect->prepare(
+        "SELECT id FROM users WHERE email = :email"
+    );
+
+    $smtm->bindParam(':email', $email, \PDO::PARAM_STR);
+    $smtm->execute();
+
+    foreach ($smtm->fetchAll(\PDO::FETCH_ASSOC) as $row) {
+        $userId = $row['id'];
+    }
+
+    $dbConnect = null;
+
+    return $userId;
 }
 
 /**

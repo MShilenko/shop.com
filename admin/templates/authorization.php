@@ -3,7 +3,7 @@
   <?php if (!empty($_POST['userAuthorization'])): ?>
     <div class="status error">Авторизация не пройдена. Проверьте данные.</div>
   <?php endif;?>
-  <form class="custom-form" name="authorization" action="<?= $_SERVER['PHP_SELF'] ?>" method="post">
+  <form class="custom-form" name="authorization" action="/admin/" method="POST">
     <input type="hidden" name="userAuthorization" value="yes">
     <?php if(isset($_COOKIE['login']) && !isset($_SESSION['auth'])): ?>
       <input type="email" name="email" value="<?= htmlspecialchars($_COOKIE['login']) ?>" placeholder="E-mail" class="custom-form__input" required="">

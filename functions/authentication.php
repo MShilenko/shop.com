@@ -8,22 +8,16 @@ namespace functions;
  */
 function authenticationCheck(): bool
 {
-    $users = getAllUSersForAuthentication();
+    if (ifUserExists($_POST['email'], $_POST['password'])) {
+        $_SESSION['auth']   = true;
+        $_SESSION['userId'] = getCurrentUserId($_POST['email']);
+        setcookie("login", $_POST['email'], time() + 60 * 60 * 24 * 30, '/');
 
-    for ($i = 0; $i < count($users); $i++) {
-        if ($users[$i]['email'] === $_POST['email'] && password_verify($_POST['password'], $users[$i]['password'])) {
-            $_SESSION['auth']   = true;
-            $_SESSION['userId'] = $users[$i]['id'];
-            setcookie("login", $users[$i]['email'], time() + 60 * 60 * 24 * 30, '/');
-
-            return true;
-        }
+        return true;
     }
 
     return false;
 }
-
-namespace functions;
 
 /**
  * Cookies and session variables for authentication
