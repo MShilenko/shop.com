@@ -1,35 +1,33 @@
 <?php 
 
 include $_SERVER['DOCUMENT_ROOT'] . '/templates/header.php'; 
-include $_SERVER['DOCUMENT_ROOT'] . '/admin/templates/top.php';
-
 $allCAtegories = functions\getAllCategoriesForAdminPanel();
 ?>
-<h1>Категории</h1>
-<table class="categories">
-  <tbody>
-    <tr>
-      <th>Id</th>
-      <th>Название</th>
-      <th>Символьный код</th>
-      <th>Описание</th>
-      <th>Автор</th>
-      <th><a href="add">Добавить новую</a></th>
-    </tr>
+<main class="page-products categories">
+  <h1 class="h h--1">Категории товаров</h1>
+  <?php if (functions\isAdministrator()): ?>
+  <a class="page-products__button button" href="/admin/categories/add/">Добавить категорию</a>
+  <div class="page-products__header">
+    <span class="page-products__header-field">Название категории</span>
+    <span class="page-products__header-field">ID</span>
+    <span class="page-products__header-field">Символьный код</span>
+    <span class="page-products__header-field description">Описание</span>
+    <span class="page-products__header-field">Автор</span>
+  </div>
+  <ul class="page-products__list">
     <?php foreach ($allCAtegories as $category): ?>
-      <tr>
-        <td><?= $category['id'] ?></td>
-        <td><?= $category['name'] ?></td>
-        <td><?= $category['slug'] ?></td>
-        <td><?= $category['description'] ?></td>
-        <td><?= $category['user_email'] ?></td>
-        <td><a href="edit/?category_id=<?= $category['id'] ?>">Изменить</a></td>
-      </tr>
-    <?php endforeach; ?>    
-  </tbody>
-</table>
-<?php 
-
-include $_SERVER['DOCUMENT_ROOT'] . '/admin/templates/bottom.php';
-include $_SERVER['DOCUMENT_ROOT'] . '/templates/footer.php'; 
-?>
+      <li class="product-item page-products__item">
+        <b class="product-item__name"><?= $category['name'] ?></b>
+        <span class="product-item__field"><?= $category['id'] ?></span>
+        <span class="product-item__field"><?= $category['slug'] ?></span>
+        <span class="product-item__field description"><?= $category['description'] ?></span>
+        <span class="product-item__field"><?= $category['user_email'] ?></span>
+        <a href="/admin/categories/edit/?category_id=<?= $category['id'] ?>" class="product-item__edit" aria-label="Редактировать"></a>
+      </li>
+    <?php endforeach; ?>  
+  </ul>
+  <? else: ?>
+    <p>Доступ запрещен.</p>
+  <? endif; ?>  
+</main>
+<?php include $_SERVER['DOCUMENT_ROOT'] . '/templates/footer.php'; ?>

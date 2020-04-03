@@ -24,5 +24,8 @@
     </address>
   </div>
 </footer>
+
+<script src="/js/front-custom.js" type="text/javascript" charset="utf-8"></script>
+<script src="/js/admin-custom.js" type="text/javascript" charset="utf-8"></script>
 </body>
 </html>

@@ -279,14 +279,14 @@ if (addList) {
   const button = document.querySelector('.button');
   const popupEnd = document.querySelector('.page-add__popup-end');
 
-  button.addEventListener('click', (evt) => {
+  // button.addEventListener('click', (evt) => {
 
-    evt.preventDefault();
+  //   evt.preventDefault();
 
-    form.hidden = true;
-    popupEnd.hidden = false;
+  //   form.hidden = true;
+  //   popupEnd.hidden = false;
 
-  })
+  // })
 
 }
 

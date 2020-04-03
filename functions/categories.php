@@ -13,12 +13,12 @@ function getAllCategoriesForAdminPanel(): array
     $result    = [];
     $dbConnect = connectDB();
 
-    $smtm = $dbConnect->query(
-        'SELECT cat.id, cat.name, cat.slug, cat.description, users.email as user_email FROM categories as cat
+    $stmt = $dbConnect->query(
+        'SELECT cat.id, cat.name, cat.slug, cat.description, users.email as user_email FROM categories AS cat
             INNER JOIN users ON cat.user_id = users.id'
     );
 
-    $result = $smtm->fetchAll(\PDO::FETCH_ASSOC);
+    $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
     $dbConnect = null;
 
@@ -35,15 +35,15 @@ function getCategoryPropertiesForAdminPanel(int $categoryId): array
     $result    = [];
     $dbConnect = connectDB();
 
-    $smtm = $dbConnect->prepare(
+    $stmt = $dbConnect->prepare(
         'SELECT name, slug, description FROM categories
             WHERE id = :id'
     );
 
-    $smtm->bindParam(':id', $categoryId, \PDO::PARAM_INT);
-    $smtm->execute();
+    $stmt->bindParam(':id', $categoryId, \PDO::PARAM_INT);
+    $stmt->execute();
 
-    $result = $smtm->fetchAll(\PDO::FETCH_ASSOC);
+    $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
     $dbConnect = null;
 
@@ -59,9 +59,9 @@ function getAllCategoriesIds(): array
     $result    = [];
     $dbConnect = connectDB();
 
-    $smtm = $dbConnect->query('SELECT id FROM categories');
+    $stmt = $dbConnect->query('SELECT id FROM categories');
 
-    foreach ($smtm->fetchAll(\PDO::FETCH_ASSOC) as $row) {
+    foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
         $result[] = $row['id'];
     }
 

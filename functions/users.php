@@ -15,12 +15,12 @@ function ifUserExists(string $email, string $password): bool
     $passwordHash = '';
     $dbConnect    = connectDB();
 
-    $smtm = $dbConnect->prepare("SELECT password FROM users WHERE email = :email");
+    $stmt = $dbConnect->prepare("SELECT password FROM users WHERE email = :email");
 
-    $smtm->bindParam(':email', $email, \PDO::PARAM_STR);
-    $smtm->execute();
+    $stmt->bindParam(':email', $email, \PDO::PARAM_STR);
+    $stmt->execute();
 
-    foreach ($smtm->fetchAll(\PDO::FETCH_ASSOC) as $row) {
+    foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
         $passwordHash = $row['password'];
     }
 
@@ -39,14 +39,14 @@ function getCurrentUserId(string $email): int
     $userId    = '';
     $dbConnect = connectDB();
 
-    $smtm = $dbConnect->prepare(
+    $stmt = $dbConnect->prepare(
         "SELECT id FROM users WHERE email = :email"
     );
 
-    $smtm->bindParam(':email', $email, \PDO::PARAM_STR);
-    $smtm->execute();
+    $stmt->bindParam(':email', $email, \PDO::PARAM_STR);
+    $stmt->execute();
 
-    foreach ($smtm->fetchAll(\PDO::FETCH_ASSOC) as $row) {
+    foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
         $userId = $row['id'];
     }
 
@@ -65,16 +65,16 @@ function getUSerRolesForProfile(int $id): array
     $result    = [];
     $dbConnect = connectDB();
 
-    $smtm = $dbConnect->prepare(
+    $stmt = $dbConnect->prepare(
         "SELECT roles.name FROM roles
             INNER JOIN role_user ON role_user.role_id = roles.id
             AND role_user.user_id = :id"
     );
 
-    $smtm->bindParam(':id', $id, \PDO::PARAM_INT);
-    $smtm->execute();
+    $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
+    $stmt->execute();
 
-    foreach ($smtm->fetchAll(\PDO::FETCH_ASSOC) as $group) {
+    foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $group) {
         $result[] = $group['name'];
     }
 
