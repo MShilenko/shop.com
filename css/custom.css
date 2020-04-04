@@ -82,3 +82,8 @@
 .page-add.for-category .button{
 	vertical-align: top;
 }
+
+.custom-form.editProduct label[for="product-name"] .custom-form__input-label,
+.custom-form.editProduct label[for="product-price"] .custom-form__input-label{
+	display: none;
+}

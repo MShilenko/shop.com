@@ -2,7 +2,7 @@
 <main class="page-add">
   <h1 class="h h--1">Добавление товара</h1>
   <?php if (functions\isAdministrator()): ?>
-    <form class="custom-form" action="/admin/products/add/" enctype="multipart/form-data" name="addProduct" method="post">
+    <form class="custom-form" enctype="multipart/form-data" name="addProduct" method="post">
       <fieldset class="page-add__group custom-form__group">
         <legend class="page-add__small-title custom-form__title">Данные о товаре</legend>
         <label for="product-name" class="custom-form__input-wrapper page-add__first-wrapper">

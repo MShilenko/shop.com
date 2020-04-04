@@ -24,7 +24,7 @@ $allProducts = functions\getAllProductsForAdminPanel();
           <span class="product-item__field"><?= $product['new'] ? 'Да' : 'Нет' ?></span>
           <!--span class="product-item__field"><?= $product['sale'] ? 'Да' : 'Нет' ?></span-->
           <a href="/admin/products/edit/?product_id=<?= $product['id'] ?>" class="product-item__edit" aria-label="Редактировать"></a>
-          <button class="product-item__delete"></button>
+          <button class="product-item__delete" data-product-id="<?= $product['id'] ?>"></button>
         </li>
      <?php endforeach; ?>
     </ul>

@@ -49,33 +49,3 @@ function getCategoryPropertiesForAdminPanel(int $categoryId): array
 
     return $result[0];
 }
-
-/**
- * Get id of all categories
- * @return array $result
- */
-function getAllCategoriesIds(): array
-{
-    $result    = [];
-    $dbConnect = connectDB();
-
-    $stmt = $dbConnect->query('SELECT id FROM categories');
-
-    foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
-        $result[] = $row['id'];
-    }
-
-    $dbConnect = null;
-
-    return $result;
-}
-
-/**
- * Check if a category exists
- * @param  int $categoryId
- * @return boolean
- */
-function issetCategory(int $categoryId): bool
-{
-    return in_array($categoryId, getAllCategoriesIds());
-}

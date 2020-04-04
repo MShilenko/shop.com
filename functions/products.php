@@ -75,3 +75,78 @@ function getCategoiresDataForTheForm(): array
 
     return $result;
 }
+
+/**
+ * Get product properties for admin panel
+ * @param  int    $categoryId
+ * @return array $result
+ */
+function getProductPropertiesForAdminPanel(int $productId): array
+{
+    $result    = [];
+    $dbConnect = connectDB();
+
+    $stmt = $dbConnect->prepare(
+        'SELECT name, price, image, sale, new FROM products
+            WHERE id = :id'
+    );
+
+    $stmt->bindParam(':id', $productId, \PDO::PARAM_INT);
+    $stmt->execute();
+
+    foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
+        $result[] = $row + ['categoriesIds' => getCategoriesIdsForProduct($productId)];
+    }
+
+    $dbConnect = null;
+
+    return $result[0];
+}
+
+/**
+ * Get Ids categories for a specific product
+ * @param  int    $productId
+ * @return array $result
+ */
+function getCategoriesIdsForProduct(int $productId): array
+{
+    $result    = [];
+    $dbConnect = connectDB();
+
+    $stmt = $dbConnect->prepare(
+        'SELECT category_id FROM category_product
+            WHERE product_id = :productId'
+    );
+
+    $stmt->bindParam(':productId', $productId, \PDO::PARAM_INT);
+    $stmt->execute();
+
+    foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
+        $result[] = $row['category_id'];
+    }
+
+    $dbConnect = null;
+
+    return $result;
+}
+
+
+function getImageName(int $productId): string
+{
+    $result    = '';
+    $dbConnect = connectDB();
+
+    $stmt = $dbConnect->prepare(
+        'SELECT image FROM products
+            WHERE id = :productId'
+    );
+
+    $stmt->bindParam(':productId', $productId, \PDO::PARAM_INT);
+    $stmt->execute();
+
+    $result = $stmt->fetchColumn();
+
+    $dbConnect = null;
+
+    return $result;
+}

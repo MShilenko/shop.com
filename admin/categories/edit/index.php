@@ -2,7 +2,7 @@
 <main class="page-add for-category">
   <h1 class="h h--1">Изменение категории</h1>
   <?php if (functions\isAdministrator()): ?>
-    <?php if (isset($_GET['category_id']) && functions\issetCategory($_GET['category_id'])): ?> 
+    <?php if (isset($_GET['category_id']) && functions\issetRecord($_GET['category_id'], 'categories')): ?> 
       <?php $categoryProperties = functions\getCategoryPropertiesForAdminPanel($_GET['category_id']); ?>
       <form class="custom-form category" name="editCategory" method="post">
         <input type="hidden" name="categoryId" value="<?= $_GET['category_id'] ?>">
@@ -17,7 +17,7 @@
         </div>
       </section> 
     <?php else: ?>  
-      <p>Нет такой категории.</p>
+      <p>Категория не найдена.</p>
     <?php endif; ?>  
   <? else: ?>    
     <p>Доступ запрещен.</p>

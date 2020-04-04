@@ -109,3 +109,40 @@ function setJSONStatus(array $status): string
 {
     return json_encode($status, JSON_UNESCAPED_UNICODE);
 }
+
+/**
+ * Get all Ids from a specific table
+ * @param  string $tableName
+ * @return array $result
+ */
+function getAllIdsFromTable(string $tableName): array
+{
+    $result    = [];
+    $allowedTablesNames = ['products', 'categories'];
+
+    if(in_array($tableName, $allowedTablesNames)){
+        $dbConnect = connectDB();
+
+        $stmt = $dbConnect->prepare("SELECT id FROM $tableName");
+        $stmt->execute();
+
+        foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
+            $result[] = $row['id'];
+        }
+
+        $dbConnect = null;
+    }
+
+    return $result;
+}
+
+/**
+ * Сheck if there is a record in the database
+ * @param  int $categoryId
+ * @param  string $tableName
+ * @return boolean
+ */
+function issetRecord(int $recordId, string $tableName): bool
+{
+    return in_array($recordId, getAllIdsFromTable($tableName));
+}

@@ -5,11 +5,12 @@ namespace functions;
 include_once $_SERVER['DOCUMENT_ROOT'] . '/functions/connectDB.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/functions/auxiliary.php';
 
-if (isset($_POST)) {
+if (!empty($_POST)) {
     echo editCategory($_POST);
 }
 
 /**
+ * Save changes to the category
  * @param  array   $categoryOptions
  * @return string
  */

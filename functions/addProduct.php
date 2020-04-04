@@ -13,6 +13,7 @@ if (isset($_POST) && isset($_FILES)) {
 }
 
 /**
+ * Add product to the database
  * @param  array   $productOptions
  * @param  array   $image
  * @param  int   $userId
@@ -55,7 +56,7 @@ function addProduct(array $productOptions, array $image, int $userId): string
                 addCategoriesForProduct($productOptions['categories'], $newProductId);
             }
 
-            return setJSONStatus(['status' => 'success', 'message' => 'Товар добавлен']);
+            return setJSONStatus(['status' => 'success', 'message' => 'Товар успешно добавлен']);
         }
 
         $dbConnect = null;
