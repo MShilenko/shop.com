@@ -152,9 +152,9 @@ if (shopList) {
 
         if (inputs.every(inp => !!inp.value)) {
 
-          evt.preventDefault();
+          //evt.preventDefault();
 
-          toggleHidden(shopOrder, popupEnd);
+          //toggleHidden(shopOrder, popupEnd);
 
           popupEnd.classList.add('fade');
           setTimeout(() => popupEnd.classList.remove('fade'), 1000);

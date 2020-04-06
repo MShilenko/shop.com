@@ -18,7 +18,7 @@ function editCategory(array $categoryOptions): string
 {
     $result = '';
 
-    if (isFieldsNotEmpty([$categoryOptions['name'], $categoryOptions['slug']])) {
+    if (isFieldsEmpty([$categoryOptions['name'], $categoryOptions['slug']])) {
         return setJSONStatus(['status' => 'error', 'message' => 'Заполните поля']);
     }
     $dbConnect = connectDB();

@@ -21,7 +21,7 @@ if (isset($_POST) && isset($_FILES)) {
  */
 function addProduct(array $productOptions, array $image, int $userId): string
 {
-    if (isFieldsNotEmpty([$productOptions['product-name'], $productOptions['product-price'], $image['tmp_name']])) {
+    if (isFieldsEmpty([$productOptions['product-name'], $productOptions['product-price'], $image['tmp_name']])) {
         if (!is_numeric($productOptions['product-price'])) {
             return setJSONStatus(['status' => 'error', 'message' => 'Заполните поля. Цена должна быть числом.']);
         }

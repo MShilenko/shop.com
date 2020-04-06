@@ -16,7 +16,7 @@ function isAdminFolder(): bool
  * @param array $fields
  * @return boolean
  */
-function isFieldsNotEmpty(array $fields): bool
+function isFieldsEmpty(array $fields): bool
 {
     return in_array('', $fields);
 }

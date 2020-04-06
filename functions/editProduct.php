@@ -23,7 +23,7 @@ function editProduct(array $productOptions, int $userId, array $image = []): str
 {
     $result = '';
 
-    if (isFieldsNotEmpty([$productOptions['product-name'], $productOptions['product-price']])) {
+    if (isFieldsEmpty([$productOptions['product-name'], $productOptions['product-price']])) {
         if (!is_numeric($productOptions['product-price'])) {
             return setJSONStatus(['status' => 'error', 'message' => 'Заполните поля. Цена должна быть числом.']);
         }

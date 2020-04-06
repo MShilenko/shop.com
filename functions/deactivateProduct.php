@@ -14,7 +14,6 @@ if ($productID = (int) file_get_contents('php://input')){
  */
 function deactivateProduct(int $productID)
 {
-    $result    = [];
     $dbConnect = connectDB();
 
     $stmt = $dbConnect->prepare("UPDATE products SET active = 0 WHERE id = :productID");

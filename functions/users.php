@@ -95,7 +95,7 @@ function isAdministrator(): bool
 }
 
 /**
- * Check user rights for administrator
+ * Check user rights for redactor
  * @return boolean
  */
 function isRedactor(): bool
@@ -103,4 +103,13 @@ function isRedactor(): bool
     $userRoles = getUSerRolesForProfile($_SESSION['userId']);
 
     return in_array('redactor', $userRoles);
+}
+
+/**
+ * Check user rights to work with orders
+ * @return bool
+ */
+function canWorkWithOrders(): bool
+{
+    return isAdministrator() || isRedactor();
 }

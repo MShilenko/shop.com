@@ -14,10 +14,7 @@ function getAllProductsForAdminPanel(): array
     $categories = [];
     $dbConnect  = connectDB();
 
-    $stmt = $dbConnect->query(
-        'SELECT products.name, products.id, products.price, products.new, products.sale FROM products
-            WHERE products.active = 1'
-    );
+    $stmt = $dbConnect->query('SELECT name, id, price, new, sale FROM products WHERE active = 1');
 
     foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
         $result[] = $row + ['categories' => implode(", ", getCategoiresNamesForCurrrentProduct($row['id']))];
@@ -130,7 +127,11 @@ function getCategoriesIdsForProduct(int $productId): array
     return $result;
 }
 
-
+/**
+ * Get the name of the image
+ * @param  int    $productId
+ * @return string $result
+ */
 function getImageName(int $productId): string
 {
     $result    = '';
@@ -149,4 +150,24 @@ function getImageName(int $productId): string
     $dbConnect = null;
 
     return $result;
+}
+
+/**
+ * Compare the price with the minimum value
+ * @param  int     $price
+ * @return boolean
+ */
+function isLowPrice(int $price): bool
+{
+    return $price < getLowPrice();
+}
+
+/**
+ * Get the final price of the goods
+ * @param  int    $price
+ * @return int
+ */
+function getTheFinalPrice(int $price): int
+{
+    return isLowPrice($price) ? $price + getDeliveryPrice() : $price;
 }

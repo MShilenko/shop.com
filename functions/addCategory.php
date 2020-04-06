@@ -18,7 +18,7 @@ if (isset($_POST)) {
  */
 function addCategory(array $categoryOptions, int $userId): string
 {
-    if (isFieldsNotEmpty([$categoryOptions['name'], $categoryOptions['slug']])) {
+    if (isFieldsEmpty([$categoryOptions['name'], $categoryOptions['slug']])) {
         return setJSONStatus(['status' => 'error', 'message' => 'Заполните поля']);
     }
 

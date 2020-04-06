@@ -18,6 +18,10 @@
   <link rel="stylesheet" href="/css/style.min.css">
   <link rel="stylesheet" href="/css/custom.css">
 
+  <?php if (!functions\isAdminFolder()): ?>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <?php endif; ?>
   <script src="/js/scripts.js" defer=""></script>
 </head>
 <body>
