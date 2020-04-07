@@ -2,6 +2,10 @@
     z-index: 9;
 }
 
+.page-products__list{
+	margin-bottom: 25px;
+}
+
 .status{
     margin: 10px auto;
     width: 70%;

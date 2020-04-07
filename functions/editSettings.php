@@ -20,6 +20,7 @@ function editSettings(array $settings): string
     $rowId = 1;
 
     if (isFieldsEmpty([
+        $settings['products_per_page'], 
         $settings['city'], 
         $settings['street'],
         $settings['house'],
@@ -31,11 +32,12 @@ function editSettings(array $settings): string
     $dbConnect = connectDB();
 
     $stmt = $dbConnect->prepare("
-        UPDATE settings SET city = :city, street = :street, house = :house, metro = :metro, min_price = :min_price, delivery_cost = :delivery_cost 
+        UPDATE settings SET products_per_page = :products_per_page, city = :city, street = :street, house = :house, metro = :metro, min_price = :min_price, delivery_cost = :delivery_cost 
             WHERE id = :id
     ");
 
     if ($stmt->execute([
+        'products_per_page'        => htmlspecialchars($settings['products_per_page']),
         'city'        => htmlspecialchars($settings['city']),
         'street'        => htmlspecialchars($settings['street']),
         'house'        => htmlspecialchars($settings['house']),

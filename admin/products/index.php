@@ -1,4 +1,6 @@
-<?php include $_SERVER['DOCUMENT_ROOT'] . '/templates/header.php'; 
+<?php 
+
+include $_SERVER['DOCUMENT_ROOT'] . '/templates/header.php'; 
 
 $allProducts = functions\getAllProductsForAdminPanel();
 ?>
@@ -28,6 +30,9 @@ $allProducts = functions\getAllProductsForAdminPanel();
         </li>
      <?php endforeach; ?>
     </ul>
+    <? if (functions\hasPagination('products')): ?>
+      <?php functions\getPagination('products');  ?>
+    <? endif; ?>
   <?php else: ?>  
     <p>Доступ запрещен.</p>
   <?php endif; ?>    

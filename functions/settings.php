@@ -14,7 +14,7 @@ function getSettingForAdminForm(): array
     $dbConnect = connectDB();
 
     $stmt = $dbConnect->query(
-        'SELECT city, street, house, metro, min_price, delivery_cost FROM settings'
+        'SELECT products_per_page, city, street, house, metro, min_price, delivery_cost FROM settings'
     );
 
     $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -53,12 +53,7 @@ function getLowPrice(): int
     $result    = '';
     $dbConnect = connectDB();
 
-    $stmt = $dbConnect->prepare(
-        'SELECT min_price FROM settings'
-    );
-
-    $stmt->bindParam(':productId', $productId, \PDO::PARAM_INT);
-    $stmt->execute();
+    $stmt = $dbConnect->query('SELECT min_price FROM settings');
 
     $result = $stmt->fetchColumn();
 
@@ -76,12 +71,7 @@ function getDeliveryPrice(): int
     $result    = '';
     $dbConnect = connectDB();
 
-    $stmt = $dbConnect->prepare(
-        'SELECT delivery_cost FROM settings'
-    );
-
-    $stmt->bindParam(':productId', $productId, \PDO::PARAM_INT);
-    $stmt->execute();
+    $stmt = $dbConnect->query('SELECT delivery_cost FROM settings');
 
     $result = $stmt->fetchColumn();
 

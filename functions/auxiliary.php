@@ -117,10 +117,10 @@ function setJSONStatus(array $status): string
  */
 function getAllIdsFromTable(string $tableName): array
 {
-    $result    = [];
+    $result             = [];
     $allowedTablesNames = ['products', 'categories'];
 
-    if(in_array($tableName, $allowedTablesNames)){
+    if (in_array($tableName, $allowedTablesNames)) {
         $dbConnect = connectDB();
 
         $stmt = $dbConnect->prepare("SELECT id FROM $tableName");

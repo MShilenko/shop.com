@@ -3,6 +3,7 @@
 namespace functions;
 
 include_once $_SERVER['DOCUMENT_ROOT'] . '/functions/connectDB.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/functions/pagination.php';
 
 /**
  * Get all products for admin panel
@@ -10,11 +11,17 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/functions/connectDB.php';
  */
 function getAllProductsForAdminPanel(): array
 {
-    $result     = [];
-    $categories = [];
-    $dbConnect  = connectDB();
+    $result           = [];
+    $isActive         = 1;
+    $paginationLimit  = getPaginationLimit('products');
+    $paginationOffset = getPaginationOffset();
+    $dbConnect        = connectDB();
 
-    $stmt = $dbConnect->query('SELECT name, id, price, new, sale FROM products WHERE active = 1');
+    $stmt = $dbConnect->query("
+        SELECT name, id, price, new, sale FROM products
+            WHERE active = $isActive
+            LIMIT $paginationLimit, $paginationOffset
+    ");
 
     foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
         $result[] = $row + ['categories' => implode(", ", getCategoiresNamesForCurrrentProduct($row['id']))];

@@ -6,6 +6,12 @@
       <?php $settings = functions\getSettingForAdminForm(); ?>
       <section class="settings-block">
         <form class="custom-form settings" name="editSettings" method="post">
+          <div class="h h--1">Настройки каталога</div>
+          <fieldset class="page-add__group custom-form__group">
+            <legend class="custom-form__title">Количество товаров(пагинация)</legend>
+            <input type="text" name="products_per_page" value="<?= htmlspecialchars($_POST['products_per_page'] ?? $settings['products_per_page']) ?>" class="custom-form__input" required="">
+          </fieldset>
+          <hr>
           <div class="h h--1">Адрес пункта самовывоза</div>
           <fieldset class="page-add__group custom-form__group">
             <legend class="custom-form__title">Город</legend>
