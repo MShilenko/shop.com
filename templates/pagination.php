@@ -1,7 +1,11 @@
 <ul class="shop__paginator paginator">
   <?php for ($i = 1; $i <= $rows; $i++): ?>
     <li>
-      <a class="paginator__item" href="?page=<?= $i ?>"><?= $i ?></a>
+      <? if (isset($_GET['page'])): ?>  
+        <a class="paginator__item<?= $i == $_GET['page'] ? ' active' : '' ?>" href="?page=<?= $i ?>"><?= $i ?></a>
+      <? else: ?>  
+        <a class="paginator__item" href="?page=<?= $i ?>"><?= $i ?></a>
+      <? endif; ?>  
     </li>
   <?php endfor; ?>
 </ul>

@@ -146,3 +146,21 @@ function issetRecord(int $recordId, string $tableName): bool
 {
     return in_array($recordId, getAllIdsFromTable($tableName));
 }
+
+/**
+ * Get the number of query lines
+ * @param  string $query
+ * @return integer
+ */
+function getQueryRowsCount(string $query): int
+{
+
+    $dbConnect = connectDB();
+    $query = preg_replace('#SELECT.*FROM#', 'SELECT COUNT(*) FROM', $query);
+
+    $stmt = $dbConnect->query($query);
+
+    $dbConnect = null;
+
+    return $stmt->fetchColumn();
+}

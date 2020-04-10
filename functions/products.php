@@ -11,20 +11,84 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/functions/pagination.php';
  */
 function getAllProductsForAdminPanel(): array
 {
-    $result           = [];
-    $isActive         = 1;
-    $paginationLimit  = getPaginationLimit('products');
-    $paginationOffset = getPaginationOffset();
-    $dbConnect        = connectDB();
+    $result   = [];
+    $isActive = 1;
+    $query    = "SELECT name, id, price, new, sale FROM products WHERE active = $isActive";
 
-    $stmt = $dbConnect->query("
-        SELECT name, id, price, new, sale FROM products
-            WHERE active = $isActive
-            LIMIT $paginationLimit, $paginationOffset
-    ");
+    $result['count'] = getQueryRowsCount($query);
+
+    if (hasPagination($result['count'])) {
+        $query .= getPaginationQuery($result['count']);
+    }
+
+    $dbConnect = connectDB();
+
+    $stmt = $dbConnect->query($query);
 
     foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
-        $result[] = $row + ['categories' => implode(", ", getCategoiresNamesForCurrrentProduct($row['id']))];
+        $result['items'][] = $row + ['categories' => implode(", ", getCategoiresNamesForCurrrentProduct($row['id']))];
+    }
+
+    $dbConnect = null;
+
+    return $result;
+}
+
+/**
+ * Get all products for frontend
+ * @return array $result
+ */
+function getAllProductsForFrontend(): array
+{
+    $result   = [];
+    $isActive = 1;
+    $query    = "SELECT products.name, products.id, products.price, products.image FROM products WHERE products.active = $isActive";
+
+    $result['count'] = getQueryRowsCount($query);
+
+    if (hasPagination($result['count'])) {
+        $query .= getPaginationQuery($result['count']);
+    }
+
+    $dbConnect = connectDB();
+
+    $stmt = $dbConnect->query($query);
+
+    foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
+        $result['items'][] = $row;
+    }
+
+    $dbConnect = null;
+
+    return $result;
+}
+
+/**
+ * Get all products for category
+ * @param integer $categoryId
+ * @return array $result
+ */
+function getAllProductsForCategory(int $categoryId): array
+{
+    $result   = [];
+    $isActive = 1;
+    $query    = "SELECT products.name, products.id, products.price, products.image FROM products
+                    INNER JOIN category_product ON category_product.product_id = products.id
+                    WHERE category_product.category_id = $categoryId
+                    AND products.active = $isActive";
+
+    $result['count'] = getQueryRowsCount($query);
+
+    if (hasPagination($result['count'])) {
+        $query .= getPaginationQuery($result['count']);
+    }
+
+    $dbConnect = connectDB();
+
+    $stmt = $dbConnect->query($query);
+
+    foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
+        $result['items'][] = $row;
     }
 
     $dbConnect = null;
@@ -53,26 +117,6 @@ function getCategoiresNamesForCurrrentProduct(int $productId): array
 
     foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
         $result[] = $row['name'];
-    }
-
-    $dbConnect = null;
-
-    return $result;
-}
-
-/**
- * Receive category data for the form
- * @return array $result
- */
-function getCategoiresDataForTheForm(): array
-{
-    $result    = [];
-    $dbConnect = connectDB();
-
-    $stmt = $dbConnect->query('SELECT id, name FROM categories');
-
-    foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
-        $result[$row['id']] = $row['name'];
     }
 
     $dbConnect = null;

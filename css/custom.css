@@ -6,6 +6,12 @@
 	margin-bottom: 25px;
 }
 
+.paginator__item[href].active {
+    color: #fff;
+    border-color: #e45446;
+    background-color: #e45446;
+}
+
 .status{
     margin: 10px auto;
     width: 70%;
@@ -120,4 +126,9 @@
 
 .custom-form.settings .page-add__group{
 	margin-bottom: 35px;
+}
+
+.category-h1,
+.category-description{
+	margin-bottom: 30px;
 }

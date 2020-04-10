@@ -21,7 +21,8 @@ if (isset($_POST)) {
  */
 function editProduct(array $productOptions, int $userId, array $image = []): string
 {
-    $result = '';
+    $result    = '';
+    $imageName = getImageName($productOptions['productId']);
 
     if (isFieldsEmpty([$productOptions['product-name'], $productOptions['product-price']])) {
         if (!is_numeric($productOptions['product-price'])) {
@@ -34,6 +35,7 @@ function editProduct(array $productOptions, int $userId, array $image = []): str
             $uploadImage = uploadImage($image);
 
             if ($uploadImage['status'] == 'error') {
+                $imageName     = $image['name'];
                 return $result = setJSONStatus(['status' => 'error', 'message' => $uploadImage['status']]);
             }
         }
@@ -42,7 +44,7 @@ function editProduct(array $productOptions, int $userId, array $image = []): str
 
         $productNew  = $productOptions['new'] ?? 0;
         $productSale = $productOptions['sale'] ?? 0;
-        $imageName   = $image['name'] ?? getImageName($productOptions['productId']);
+        $imageName   = $image['size'] > 0 ? $image['name'] : getImageName($productOptions['productId']);
 
         $stmt = $dbConnect->prepare("
             UPDATE products SET name = :name, price = :price, image = :image, new = :new, sale = :sale, user_id = :user_id WHERE id = :productId"

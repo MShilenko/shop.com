@@ -1,9 +1,4 @@
-<?php 
-
-include $_SERVER['DOCUMENT_ROOT'] . '/templates/header.php'; 
-
-$allProducts = functions\getAllProductsForAdminPanel();
-?>
+<?php include $_SERVER['DOCUMENT_ROOT'] . '/templates/header.php'; ?>
 <main class="page-products">
   <h1 class="h h--1">Товары</h1>
   <?php if (functions\isAdministrator()): ?>
@@ -17,7 +12,8 @@ $allProducts = functions\getAllProductsForAdminPanel();
       <!--span class="page-products__header-field">Распродажа</span-->
     </div>
     <ul class="page-products__list">
-      <?php foreach ($allProducts as $product): ?>
+      <?php $products = functions\getAllProductsForAdminPanel(); ?>
+      <?php foreach ($products['items'] as $product): ?>
         <li class="product-item page-products__item">
           <b class="product-item__name"><?= $product['name'] ?></b>
           <span class="product-item__field"><?= $product['id'] ?></span>
@@ -30,8 +26,8 @@ $allProducts = functions\getAllProductsForAdminPanel();
         </li>
      <?php endforeach; ?>
     </ul>
-    <? if (functions\hasPagination('products')): ?>
-      <?php functions\getPagination('products');  ?>
+    <? if (functions\hasPagination($products['count'])): ?>
+      <?php functions\getPagination($products['count']);  ?>
     <? endif; ?>
   <?php else: ?>  
     <p>Доступ запрещен.</p>

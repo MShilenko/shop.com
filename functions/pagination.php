@@ -4,17 +4,17 @@ namespace functions;
 
 /**
  * Get pagination limit
- * @param string $tableName
+ * @param int $rowsCount
  * @return int $result
  */
-function getPaginationLimit(string $tableName): int
+function getPaginationLimit(string $rowsCount): int
 {
     $result = 0;
 
     if (isset($_GET['page'])) {
         $offset = getPaginationOffset() * ($_GET['page'] - 1);
 
-        if ($offset < getTableRowCount($tableName)) {
+        if ($offset < $rowsCount) {
             $result = $offset;
         }
     }
@@ -45,7 +45,7 @@ function getPaginationOffset(): int
  * @param string $tableName
  * @return int $result
  */
-function getTableRowCount(string $tableName): int
+function getTablerowsCount(string $tableName): int
 {
     $result             = [];
     $allowedTablesNames = ['products', 'categories'];
@@ -66,23 +66,36 @@ function getTableRowCount(string $tableName): int
 }
 
 /**
+ * Get properties for pagination
+ * @param  int $rowsCount
+ * @return [type] [description]
+ */
+function getPaginationQuery(int $rowsCount): string
+{
+    $paginationLimit  = getPaginationLimit($rowsCount);
+    $paginationOffset = getPaginationOffset();
+
+    return " LIMIT $paginationLimit, $paginationOffset";
+}
+
+/**
  * Check if a pagination block is needed
- * @param  string  $tableName
+ * @param  int $rowsCount
  * @return boolean
  */
-function hasPagination(string $tableName): bool
+function hasPagination(int $rowsCount): bool
 {
-    return getPaginationOffset() < getTableRowCount($tableName);
+    return getPaginationOffset() < $rowsCount;
 }
 
 /**
  * Print the pagination pattern
- * @param  string $tableName [description]
+ * @param  int $rowsCount
  */
-function getPagination(string $tableName)
+function getPagination(int $rowsCount)
 {
-    $rows = intdiv(getTableRowCount($tableName), getPaginationOffset());
-    $rows = getTableRowCount($tableName) % getPaginationOffset() ? $rows + 1 : $rows;
+    $rows = intdiv($rowsCount, getPaginationOffset());
+    $rows = $rowsCount % getPaginationOffset() ? $rows + 1 : $rows;
 
     include $_SERVER['DOCUMENT_ROOT'] . '/templates/pagination.php';
 }

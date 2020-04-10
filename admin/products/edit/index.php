@@ -26,7 +26,7 @@
           <ul class="add-list">
             <li class="add-list__item add-list__item--add">
               <input type="file" name="product-photo" id="product-photo" hidden="" accept="<?= ALLOWED_FILE_TYPES ?>">
-              <label for="product-photo">Добавить фотографию</label>
+              <label for="product-photo">Заменить фотографию</label>
             </li>
           </ul>
         </fieldset>

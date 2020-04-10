@@ -2,7 +2,7 @@
   <div class="shop-page__wrapper">
     <h2 class="h h--1">Оформление заказа</h2>
     <form name="order" method="post" class="custom-form js-order">
-      <input type="hidden" name="productId" value="21">
+      <input type="hidden" name="productId">
       <fieldset class="custom-form__group">
         <legend class="custom-form__title">Укажите свои личные данные</legend>
         <p class="custom-form__info">
