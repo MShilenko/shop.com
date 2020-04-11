@@ -44,6 +44,10 @@ function getAllProductsForFrontend(): array
     $isActive = 1;
     $query    = "SELECT products.name, products.id, products.price, products.image FROM products WHERE products.active = $isActive";
 
+    if (isset($_GET['sort_q'])) {
+        $query .= getOrderQuery($_GET['sort_d'], $_GET['sort_q']);
+    }
+
     $result['count'] = getQueryRowsCount($query);
 
     if (hasPagination($result['count'])) {
@@ -76,6 +80,10 @@ function getAllProductsForCategory(int $categoryId): array
                     INNER JOIN category_product ON category_product.product_id = products.id
                     WHERE category_product.category_id = $categoryId
                     AND products.active = $isActive";
+
+    if (isset($_GET['sort_q'])) {
+        $query .= getOrderQuery($_GET['sort_d'], $_GET['sort_q']);
+    }
 
     $result['count'] = getQueryRowsCount($query);
 

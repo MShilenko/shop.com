@@ -156,11 +156,50 @@ function getQueryRowsCount(string $query): int
 {
 
     $dbConnect = connectDB();
-    $query = preg_replace('#SELECT.*FROM#', 'SELECT COUNT(*) FROM', $query);
+    $query     = preg_replace('#SELECT.*FROM#', 'SELECT COUNT(*) FROM', $query);
 
     $stmt = $dbConnect->query($query);
 
     $dbConnect = null;
 
     return $stmt->fetchColumn();
+}
+
+/**
+ * the word in the correct case
+ * @param  int    $count
+ * @return string
+ */
+function getEnding(int $count): string
+{
+    $end           = 'ь';
+    $lastNumber    = substr($count, -1);
+    $lastTwoNumber = substr($count, -2);
+
+    if (($lastTwoNumber > 10 && $lastTwoNumber < 15) || ($lastNumber >= 5 && $lastNumber <= 9) || ($lastNumber == 0)) {
+        $end = 'ей';
+    } elseif ($lastNumber >= 2 && $lastNumber <= 4) {
+        $end = 'и';
+    }
+
+    return "модел" . $end;
+}
+
+/**
+ * Get order query
+ * @param  string $directing
+ * @param  string $column
+ * @return string $result
+ */
+function getOrderQuery(string $directing, string $column): string
+{
+    $result          = '';
+    $allowDirections = ['asc', 'desc'];
+    $allowСolumns   = ['name', 'price'];
+
+    if (in_array($directing, $allowDirections) && in_array($column, $allowСolumns)) {
+        $result = " ORDER BY $column $directing";
+    }
+
+    return $result;
 }

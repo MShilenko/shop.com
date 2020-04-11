@@ -132,3 +132,13 @@
 .category-description{
 	margin-bottom: 30px;
 }
+
+.shop__sorting-item .button{
+	display: none;
+	width: 100%;
+}
+
+.shop__sorting-item .button.active{
+	display: block;
+}
+
