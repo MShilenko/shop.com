@@ -12,6 +12,14 @@
     background-color: #e45446;
 }
 
+.main-menu--footer .main-menu__item.active{
+	color: #e45446;
+}
+
+.main-menu--footer .main-menu__item {
+    padding: 0 1em;
+}
+
 .status{
     margin: 10px auto;
     width: 70%;
@@ -133,12 +141,14 @@
 	margin-bottom: 30px;
 }
 
-.shop__sorting-item .button{
+.shop__sorting-item .button,
+form[name="filter"] .button{
 	display: none;
 	width: 100%;
 }
 
-.shop__sorting-item .button.active{
+.shop__sorting-item .button.active,
+form[name="filter"] .button.active{
 	display: block;
 }
 

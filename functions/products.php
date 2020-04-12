@@ -44,6 +44,10 @@ function getAllProductsForFrontend(): array
     $isActive = 1;
     $query    = "SELECT products.name, products.id, products.price, products.image FROM products WHERE products.active = $isActive";
 
+    if (hasFilterParameters()) {
+        $query .= getFilterQuery();
+    }
+
     if (isset($_GET['sort_q'])) {
         $query .= getOrderQuery($_GET['sort_d'], $_GET['sort_q']);
     }
@@ -80,6 +84,10 @@ function getAllProductsForCategory(int $categoryId): array
                     INNER JOIN category_product ON category_product.product_id = products.id
                     WHERE category_product.category_id = $categoryId
                     AND products.active = $isActive";
+
+    if (hasFilterParameters()) {
+        $query .= getFilterQuery();
+    }                    
 
     if (isset($_GET['sort_q'])) {
         $query .= getOrderQuery($_GET['sort_d'], $_GET['sort_q']);
@@ -229,4 +237,24 @@ function isLowPrice(int $price): bool
 function getTheFinalPrice(int $price): int
 {
     return isLowPrice($price) ? $price + getDeliveryPrice() : $price;
+}
+
+/**
+ * Get the price range for products
+ * @return array $result
+ */
+function getProductsRange(): array
+{
+    $result    = [];
+    $dbConnect = connectDB();
+
+    $stmt = $dbConnect->query('SELECT MIN(price) as min_price, MAX(price) as max_price FROM products');
+
+    foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
+        $result[] = $row;
+    }
+
+    $dbConnect = null;
+
+    return $result[0];
 }

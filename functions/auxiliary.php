@@ -203,3 +203,38 @@ function getOrderQuery(string $directing, string $column): string
 
     return $result;
 }
+
+/**
+ * Check for filtering options
+ * @return boolean
+ */
+function hasFilterParameters(): bool
+{
+    $filterParameters = [
+        'minPrice',
+        'maxPrice',
+        'new',
+        'sale',
+    ];
+
+    return array_intersect($filterParameters, array_keys($_GET)) ? true : false;
+}
+
+/**
+ * Prepare the query string for the filter
+ * @return string $result
+ */
+function getFilterQuery(): string
+{
+    $isActive = 1;
+    $result   = '';
+
+    if (isset($_GET['minPrice']) && isset($_GET['maxPrice'])) {
+        $result .= ' AND (price BETWEEN ' . (int) $_GET['minPrice'] . ' AND ' . (int) $_GET['maxPrice'] . ')';
+    }
+
+    $result .= isset($_GET['new']) && $_GET['new'] == 'on' ? " AND new = $isActive" : "";
+    $result .= isset($_GET['sale']) && $_GET['sale'] == 'on' ? " AND sale = $isActive" : "";
+
+    return $result;
+}

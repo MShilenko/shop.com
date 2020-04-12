@@ -5,18 +5,7 @@
     </a>
     <nav class="page-footer__menu">
       <ul class="main-menu main-menu--footer">
-        <li>
-          <a class="main-menu__item" href="#">Главная</a>
-        </li>
-        <li>
-          <a class="main-menu__item" href="#">Новинки</a>
-        </li>
-        <li>
-          <a class="main-menu__item" href="index.html">Sale</a>
-        </li>
-        <li>
-          <a class="main-menu__item" href="delivery.html">Доставка</a>
-        </li>
+        <?php include $_SERVER['DOCUMENT_ROOT'] . '/templates/menu.php'; ?>
       </ul>
     </nav>
     <address class="page-footer__copyright">

@@ -99,3 +99,20 @@ function getPagination(int $rowsCount)
 
     include $_SERVER['DOCUMENT_ROOT'] . '/templates/pagination.php';
 }
+
+/**
+ * Prepare the query string
+ * @param  int    $pageNumber
+ * @return string $result
+ */
+function getPaginationStartQuery(int $pageNumber): string
+{
+    $result = '?page=' . $pageNumber;
+    $startQuery = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
+
+    if(!empty($startQuery)){
+        $result = preg_match("#page=#", $startQuery) ? preg_replace('#page=\d+#', '?page=' . $pageNumber, $startQuery) : $result . '&' . $startQuery;
+    }
+
+    return $result; 
+}
