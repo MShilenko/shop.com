@@ -9,6 +9,9 @@
     <li>
       <a class="main-menu__item" href="/admin/products/">Товары</a>
     </li>
+    <li>
+      <a class="main-menu__item" href="/admin/pages/">Страницы</a>
+    </li>
   <? endif; ?> 
   <?php if (functions\isAdministrator() || functions\isRedactor()): ?> 
     <li>
@@ -29,6 +32,6 @@
     <a class="main-menu__item" href="/?sale=on">Sale</a>
   </li>
   <li>
-    <a class="main-menu__item" href="delivery.html">Доставка</a>
+    <a class="main-menu__item" href="/delivery/">Доставка</a>
   </li>
 <?php endif; ?>

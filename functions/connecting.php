@@ -11,6 +11,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/functions/users.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/functions/authentication.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/functions/categories.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/functions/products.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/functions/pages.php';
 
 if (isAuth() && isAdminFolder()){
     include $_SERVER['DOCUMENT_ROOT'] . '/functions/orders.php';

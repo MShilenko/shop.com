@@ -152,3 +152,36 @@ form[name="filter"] .button.active{
 	display: block;
 }
 
+.custom-form.page{
+	text-align: center;
+} 
+
+.custom-form.page textarea{
+	width: 605px;
+    margin: 10px;
+    height: auto;
+    min-height: 200px;
+    font: inherit;
+    resize: both;
+}
+
+.page-404{
+	-webkit-box-flex: 1;
+	-ms-flex-positive: 1;
+	flex-grow: 1;	
+}
+
+
+.page-404 section{
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-ms-flex-flow: row wrap;
+	flex-flow: row wrap;
+}
+
+.page-404 section > h1,
+.page-404 section > p{
+	-webkit-box-flex: 1;
+	    -ms-flex: 1 0 100%;
+	        flex: 1 0 100%;
+}

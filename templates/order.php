@@ -67,7 +67,7 @@
           </tr>
           <tr>
             <td class="custom-table__head">Срок доставки: </td>
-            <td class="date">13 декабря—15 декабря</td>
+            <td class="date"><?= date('d.m.Y', time() + 86400) ?>—<?= date('d.m.Y', time() + 259200) ?></td>
           </tr>
         </table>
       </div>

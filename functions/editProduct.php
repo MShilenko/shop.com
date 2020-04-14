@@ -24,11 +24,11 @@ function editProduct(array $productOptions, int $userId, array $image = []): str
     $result    = '';
     $imageName = getImageName($productOptions['productId']);
 
-    if (isFieldsEmpty([$productOptions['product-name'], $productOptions['product-price']])) {
-        if (!is_numeric($productOptions['product-price'])) {
-            return setJSONStatus(['status' => 'error', 'message' => 'Заполните поля. Цена должна быть числом.']);
-        }
+    if (!is_numeric($productOptions['product-price']) || $productOptions['product-price'] == 0) {
+        return setJSONStatus(['status' => 'error', 'message' => 'Заполните поле Цена корректно.']);
+    }
 
+    if (isFieldsEmpty([$productOptions['product-name'], $productOptions['product-price']])) {
         return setJSONStatus(['status' => 'error', 'message' => 'Заполните поля']);
     } else {
         if ($image['size'] > 0) {

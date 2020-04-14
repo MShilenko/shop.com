@@ -48,7 +48,7 @@ function getPaginationOffset(): int
 function getTablerowsCount(string $tableName): int
 {
     $result             = [];
-    $allowedTablesNames = ['products', 'categories'];
+    $allowedTablesNames = explode(", ", ALLOWED_TABLES_NAMES);
 
     if (in_array($tableName, $allowedTablesNames)) {
         $result    = '';

@@ -71,35 +71,15 @@ function getCategoiresDataForTheForm(): array
 }
 
 /**
- * Get slugs for all categories
- * @return array $result
- */
-function getAllCategoriesSlugs(): array
-{
-    $result    = [];
-    $dbConnect = connectDB();
-
-    $stmt = $dbConnect->query('SELECT slug FROM categories');
-
-    foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
-        $result[] = $row['slug'];
-    }
-
-    $dbConnect = null;
-
-    return $result;
-}
-
-/**
  * Get category id
  * @return integer $result
  */
 function getCategoryId(): int
 {
-    foreach (getAllCategoriesSlugs() as $category) {
+    foreach (getAllSlugs('categories') as $category) {
         $categoryURL = PRODUCTS_CATEGORIES_PATH . $category . '/';
         if ($categoryURL == parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)) {
-            return getCategoryIdFromSlug($category);
+            return getIdBySlug($category, 'categories');
         }
     }
 
@@ -107,29 +87,8 @@ function getCategoryId(): int
 }
 
 /**
- * Get category id by slug
- * @param  string $categorySlug
- * @return integer $result
- */
-function getCategoryIdFromSlug(string $categorySlug): int
-{
-    $dbConnect = connectDB();
-
-    $stmt = $dbConnect->prepare('SELECT id FROM categories WHERE slug = :slug');
-
-    $stmt->bindParam(':slug', $categorySlug, \PDO::PARAM_STR);
-    $stmt->execute();
-
-    $result = $stmt->fetchColumn();
-
-    $dbConnect = null;
-
-    return $result;
-}
-
-/**
  * Get category options
- * @param  int    $categoryId [description]
+ * @param  int    $categoryId
  * @return array $result
  */
 function getCategoryOptionsForFront(int $categoryId): array

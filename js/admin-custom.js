@@ -3,9 +3,12 @@ document.addEventListener("DOMContentLoaded", function() {
     let editCategory = document.forms.editCategory;
     let addProduct = document.forms.addProduct;
     let editProduct = document.forms.editProduct;
+    let addPage = document.forms.addPage;
+    let editPage = document.forms.editPage;
     let order = document.forms.order;
     let editSettings = document.forms.editSettings;
     let productList = document.querySelector('.page-products__list');
+    let pagesList = document.querySelector('.pages .page-products__list');
     let orderList = document.querySelector('.page-order__list');
 
     function fetchForForm(currentForm, action, destination = '') {
@@ -59,6 +62,12 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     if (editProduct) {
         fetchForForm(editProduct, '/functions/editProduct.php', '/admin/products/');
+    }
+    if (addPage) {
+        fetchForForm(addPage, '/functions/addPage.php', '/admin/pages/');
+    }  
+    if (editPage) {
+        fetchForForm(editPage, '/functions/editPage.php', '/admin/pages/');
     }    
     if (order) {
         fetchForForm(order, '/functions/saveOrder.php');
@@ -67,15 +76,25 @@ document.addEventListener("DOMContentLoaded", function() {
         fetchForForm(editSettings, '/functions/editSettings.php', '/admin/');
     }
 
-    if(productList){
-        productList.onclick = async (event) => {
-            if(event.target.classList.contains('product-item__delete')){
-                let response = await fetch('/functions/deactivateProduct.php', {
+    function fetchToDelete(buttonsBlock, buttonClass, action, idAttribute){
+        buttonsBlock.onclick = async (event) => {
+            if(event.target.classList.contains(buttonClass)){
+                let response = await fetch(action, {
                     method: 'POST',
-                    body: event.target.getAttribute('data-product-id')
+                    body: event.target.getAttribute(idAttribute)
                 });
+                let result = await response.text();
+                console.log(result);
             }
         };
+    }
+
+    if(productList){
+        fetchToDelete(productList, 'product-item__delete', '/functions/deactivateProduct.php', 'data-product-id');
+    }
+
+    if(pagesList){
+        fetchToDelete(pagesList, 'product-item__delete', '/functions/deactivatePage.php', 'data-page-id');
     }
 
     if(orderList){
@@ -86,8 +105,6 @@ document.addEventListener("DOMContentLoaded", function() {
                     method: 'POST',
                     body: [event.target.getAttribute('data-order-id'), status]
                 });
-            let result = await response.text();
-            console.log(result);
             }
         };
     }

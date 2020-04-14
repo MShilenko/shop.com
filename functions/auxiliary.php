@@ -118,7 +118,7 @@ function setJSONStatus(array $status): string
 function getAllIdsFromTable(string $tableName): array
 {
     $result             = [];
-    $allowedTablesNames = ['products', 'categories'];
+    $allowedTablesNames = explode(", ", ALLOWED_TABLES_NAMES);
 
     if (in_array($tableName, $allowedTablesNames)) {
         $dbConnect = connectDB();
@@ -138,7 +138,7 @@ function getAllIdsFromTable(string $tableName): array
 
 /**
  * Сheck if there is a record in the database
- * @param  int $categoryId
+ * @param  int $recordId
  * @param  string $tableName
  * @return boolean
  */
@@ -235,6 +235,57 @@ function getFilterQuery(): string
 
     $result .= isset($_GET['new']) && $_GET['new'] == 'on' ? " AND new = $isActive" : "";
     $result .= isset($_GET['sale']) && $_GET['sale'] == 'on' ? " AND sale = $isActive" : "";
+
+    return $result;
+}
+
+/**
+ * Get all slugs from table
+ * @param  string $tableName
+ * @return array $result
+ */
+function getAllSlugs(string $tableName): array
+{
+    $result             = [];
+    $allowedTablesNames = explode(", ", ALLOWED_TABLES_NAMES);
+
+    if (in_array($tableName, $allowedTablesNames)) {
+        $dbConnect = connectDB();
+
+        $stmt = $dbConnect->query('SELECT slug FROM ' . $tableName);
+
+        foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
+            $result[] = $row['slug'];
+        }
+
+        $dbConnect = null;
+    }
+
+    return $result;
+}
+
+/**
+ * Get id by slug
+ * @param  string $categorySlug
+ * @param  string $tableName
+ * @return integer $result
+ */
+function getIdBySlug(string $categorySlug, string $tableName): int
+{
+    $dbConnect          = connectDB();
+    $result             = [];
+    $allowedTablesNames = explode(", ", ALLOWED_TABLES_NAMES);
+
+    if (in_array($tableName, $allowedTablesNames)) {
+        $stmt = $dbConnect->prepare("SELECT id FROM $tableName WHERE slug = :slug");
+
+        $stmt->bindParam(':slug', $categorySlug, \PDO::PARAM_STR);
+        $stmt->execute();
+
+        $result = $stmt->fetchColumn();
+
+        $dbConnect = null;
+    }
 
     return $result;
 }

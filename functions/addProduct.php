@@ -21,11 +21,11 @@ if (isset($_POST) && isset($_FILES)) {
  */
 function addProduct(array $productOptions, array $image, int $userId): string
 {
-    if (isFieldsEmpty([$productOptions['product-name'], $productOptions['product-price'], $image['tmp_name']])) {
-        if (!is_numeric($productOptions['product-price'])) {
-            return setJSONStatus(['status' => 'error', 'message' => 'Заполните поля. Цена должна быть числом.']);
-        }
+    if (!is_numeric($productOptions['product-price']) || $productOptions['product-price'] == 0) {
+        return setJSONStatus(['status' => 'error', 'message' => 'Заполните поле Цена корректно.']);
+    }
 
+    if (isFieldsEmpty([$productOptions['product-name'], $productOptions['product-price'], $image['tmp_name']])) {
         return setJSONStatus(['status' => 'error', 'message' => 'Заполните поля']);
     } else {
         $uploadImage = uploadImage($image);
