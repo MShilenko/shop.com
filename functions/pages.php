@@ -60,7 +60,7 @@ function getPagePropertiesForAdminPanel(int $pageId): array
  */
 function prepareDescription(string $description): string
 {
-   return mb_strimwidth(strip_tags($description), 0, 50, "...");
+    return mb_strimwidth(strip_tags($description), 0, 50, "...");
 }
 
 /**
@@ -110,4 +110,27 @@ function getPageOptionsForFront(int $pageId): array
 function isMain(): bool
 {
     return parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) == '/';
+}
+
+/**
+ * Check whether the delivery page
+ * @return boolean
+ */
+function isDelivery(): bool
+{
+    return parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) == '/delivery/';
+}
+
+/**
+ * Replace information for the delivery page
+ * @param  string $description
+ * @return string
+ */
+function replaceDeliveryInformation(string $description): string
+{
+    return str_replace(
+        ['<!--delivery_price-->', '<!--low_price-->', '<!--two_delivery_price-->'],
+        [getDeliveryPrice(), getLowPrice(), getDeliveryPrice() * 2],
+        $description
+    );
 }

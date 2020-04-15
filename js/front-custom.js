@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
     let filter = document.forms.filter;
+    let order = document.forms.order;
     let headerMenuElements = document.querySelectorAll('.main-menu--header > li');
     let footerMenuElements = document.querySelectorAll('.main-menu--footer > li');
     let sortMenuElements = document.querySelectorAll('.filter__list > li');
@@ -7,9 +8,6 @@ document.addEventListener("DOMContentLoaded", function() {
     let sortButton = document.querySelector('.shop__sorting-item .button');
     let filterButton = document.querySelector('form[name="filter"] .button');
     let sorting = document.querySelectorAll('.shop__sorting-item .custom-form__select');
-    if (document.forms.order) {
-        let productIdInput = document.forms.order.productId;
-    }
 
     function activeMenuElement(menu) {
         for (let elem of menu) {
@@ -32,6 +30,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     if (productsList) {
         productsList.addEventListener('click', (event) => {
+            let productIdInput = order.productId;
             if (event.target.classList.contains('product')) {
                 productIdInput.value = event.target.getAttribute('data-product-id');
             }
@@ -73,9 +72,10 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         if (submitButton) {
             submitButton.addEventListener('click', () => {
+                event.preventDefault();
                 document.location.reload();
             });
-        }    
+        }
     }
     if (sorting) {
         let defaultValues = {
