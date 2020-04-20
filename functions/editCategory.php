@@ -25,12 +25,16 @@ function editCategory(array $categoryOptions): string
 
     $stmt = $dbConnect->prepare("UPDATE categories SET name = :name, slug = :slug, description = :description WHERE id = :id");
 
-    if ($stmt->execute([
-        'name'        => htmlspecialchars($categoryOptions['name']),
-        'slug'        => htmlspecialchars($categoryOptions['slug']),
-        'description' => htmlspecialchars($categoryOptions['description'] ?? ''),
-        'id'          => htmlspecialchars($categoryOptions['categoryId']),
-    ])) {
+    $stmt->execute([
+        'name'        => strip_tags($categoryOptions['name']),
+        'slug'        => strip_tags($categoryOptions['slug']),
+        'description' => strip_tags($categoryOptions['description'] ?? ''),
+        'id'          => strip_tags($categoryOptions['categoryId']),
+    ]);
+
+    if (hasDBErrors($stmt->errorInfo())) {
+        errorLogsDB(__FUNCTION__, $stmt->errorInfo());
+    } else {
         $dbConnect = null;
         return setJSONStatus(['status' => 'success', 'message' => 'Категория обновлена']);
     }

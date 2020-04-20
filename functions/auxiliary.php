@@ -289,3 +289,25 @@ function getIdBySlug(string $categorySlug, string $tableName): int
 
     return $result;
 }
+
+/**
+ * Check for errors when saving to the database
+ * @return boolean
+ */
+function hasDBErrors(array $error): bool
+{
+    return $error[0] !== "00000";
+}
+
+/**
+ * Write error logs
+ * @param  string $functionName
+ * @param  array  $error
+ */
+function errorLogsDB(string $functionName,  array $error)
+{
+    $file    = $_SERVER['DOCUMENT_ROOT'] . 'include/error_log.txt';
+    $current = file_get_contents($file);
+    $current .= date('d.m.Y G:i:s') . ' | ' . $functionName . ' | ' . json_encode($error) . PHP_EOL;
+    file_put_contents($file, $current);
+}

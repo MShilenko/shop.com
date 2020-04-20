@@ -114,7 +114,12 @@ if (shopList) {
 
       const shopOrder = document.querySelector('.shop-page__order');
 
-      toggleHidden(document.querySelector('.intro'), document.querySelector('.shop'), shopOrder);
+      if (document.location.pathname == '/') {
+        toggleHidden(document.querySelector('.intro'), document.querySelector('.shop'), shopOrder);
+      } else {
+        toggleHidden(document.querySelector('.shop'), shopOrder);
+      }
+      
 
       window.scroll(0, 0);
 

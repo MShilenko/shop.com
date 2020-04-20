@@ -2,15 +2,17 @@
 
 namespace functions;
 
+include $_SERVER['DOCUMENT_ROOT'] . '/config.php';
+
 /**
  * Establish a connection to the database
  */
 function connectDB()
 {
-    $host     = 'localhost';
-    $user     = 'root';
-    $password = '211187';
-    $db       = 'shop';
+    $host     = HOST;
+    $user     = USER;
+    $password = PASSWORD;
+    $db       = DB;
 
     static $connection = null;
 

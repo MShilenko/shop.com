@@ -41,14 +41,18 @@ function addProduct(array $productOptions, array $image, int $userId): string
                 VALUES (:name, :price, :image, :new, :sale, :user_id)"
         );
 
-        if ($stmt->execute([
-            'name'    => htmlspecialchars($productOptions['product-name']),
-            'price'   => htmlspecialchars((int) $productOptions['product-price']),
-            'image'   => htmlspecialchars($image['name']),
-            'new'     => htmlspecialchars($productOptions['new'] ?? 0),
-            'sale'    => htmlspecialchars($productOptions['sale'] ?? 0),
+        $stmt->execute([
+            'name'    => strip_tags($productOptions['product-name']),
+            'price'   => strip_tags((int) $productOptions['product-price']),
+            'image'   => strip_tags($image['name']),
+            'new'     => strip_tags($productOptions['new'] ?? 0),
+            'sale'    => strip_tags($productOptions['sale'] ?? 0),
             'user_id' => $userId,
-        ])) {
+        ]);
+
+        if (hasDBErrors($stmt->errorInfo())) {
+            errorLogsDB(__FUNCTION__, $stmt->errorInfo());
+        } else {
             $newProductId = $dbConnect->lastInsertId();
             $dbConnect    = null;
 

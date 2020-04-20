@@ -58,7 +58,11 @@ function editProduct(array $productOptions, int $userId, array $image = []): str
         $stmt->bindParam(':productId', $productOptions['productId'], \PDO::PARAM_INT);
         $stmt->bindParam(':image', $imageName, \PDO::PARAM_STR);
 
-        if ($stmt->execute()) {
+        $stmt->execute();
+
+        if (hasDBErrors($stmt->errorInfo())) {
+            errorLogsDB(__FUNCTION__, $stmt->errorInfo());
+        } else {
             $dbConnect = null;
 
             if (isset($productOptions['categories'])) {

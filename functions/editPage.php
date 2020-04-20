@@ -25,12 +25,16 @@ function editPage(array $pageOptions): string
 
     $stmt = $dbConnect->prepare("UPDATE pages SET name = :name, slug = :slug, description = :description WHERE id = :id");
 
-    if ($stmt->execute([
-        'name'        => htmlspecialchars($pageOptions['name']),
-        'slug'        => htmlspecialchars($pageOptions['slug']),
+    $stmt->execute([
+        'name'        => strip_tags($pageOptions['name']),
+        'slug'        => strip_tags($pageOptions['slug']),
         'description' => htmlspecialchars_decode($pageOptions['description']),
-        'id'          => htmlspecialchars($pageOptions['pageId']),
-    ])) {
+        'id'          => strip_tags($pageOptions['pageId']),
+    ]);
+
+    if (hasDBErrors($stmt->errorInfo())) {
+        errorLogsDB(__FUNCTION__, $stmt->errorInfo());
+    } else {
         $dbConnect = null;
         return setJSONStatus(['status' => 'success', 'message' => 'Страница обновлена']);
     }

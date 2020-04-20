@@ -13,7 +13,7 @@ function getAllProductsForAdminPanel(): array
 {
     $result   = [];
     $isActive = 1;
-    $query    = "SELECT name, id, price, new, sale FROM products WHERE active = $isActive";
+    $query    = "SELECT name, id, price, new, sale FROM products WHERE active = $isActive ORDER BY id DESC";
 
     $result['count'] = getQueryRowsCount($query);
 

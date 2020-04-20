@@ -40,48 +40,30 @@ function saveOrder(array $orderOptions): string
 
     $dbConnect = connectDB();
 
-    if (!$delivery) {
-        $stmt = $dbConnect->prepare("
-        INSERT INTO orders (customer_surname, customer_name, customer_phone, customer_email, customer_thirdname, delivery, payment, comment, product_id)
-            VALUES (:customer_surname, :customer_name, :customer_phone, :customer_email, :customer_thirdname, :delivery, :payment, :comment, :product_id)"
-        );
-
-        if ($stmt->execute([
-            'customer_surname'   => htmlspecialchars($orderOptions['surname']),
-            'customer_name'      => htmlspecialchars($orderOptions['name']),
-            'customer_phone'     => htmlspecialchars($orderOptions['phone']),
-            'customer_email'     => htmlspecialchars($orderOptions['email']),
-            'delivery'           => htmlspecialchars($orderOptions['delivery']),
-            'payment'            => htmlspecialchars($orderOptions['pay']),
-            'customer_thirdname' => htmlspecialchars($orderOptions['thirdName'] ?? ''),
-            'comment'            => htmlspecialchars($orderOptions['comment'] ?? ''),
-            'product_id'         => $orderOptions['productId'],
-        ])) {
-            $dbConnect = null;
-            return setJSONStatus(['status' => 'success', 'message' => 'Спасибо за заказ!']);
-        }
-    }
-
     $stmt = $dbConnect->prepare("
     INSERT INTO orders (customer_surname, customer_name, customer_phone, customer_email, customer_thirdname, delivery, payment, comment, city, street, house, apartment, product_id)
         VALUES (:customer_surname, :customer_name, :customer_phone, :customer_email, :customer_thirdname, :delivery, :payment, :comment, :city, :street, :house, :apartment, :product_id)"
     );
 
-    if ($stmt->execute([
-        'customer_surname'   => htmlspecialchars($orderOptions['surname']),
-        'customer_name'      => htmlspecialchars($orderOptions['name']),
-        'customer_phone'     => htmlspecialchars($orderOptions['phone']),
-        'customer_email'     => htmlspecialchars($orderOptions['email']),
-        'delivery'           => htmlspecialchars($orderOptions['delivery']),
-        'payment'            => htmlspecialchars($orderOptions['pay']),
-        'customer_thirdname' => htmlspecialchars($orderOptions['thirdName'] ?? ''),
-        'comment'            => htmlspecialchars($orderOptions['comment'] ?? ''),
-        'city'               => htmlspecialchars($orderOptions['city']),
-        'street'             => htmlspecialchars($orderOptions['street']),
-        'house'              => htmlspecialchars($orderOptions['home']),
-        'apartment'          => htmlspecialchars($orderOptions['aprt']),
+    $stmt->execute([
+        'customer_surname'   => strip_tags($orderOptions['surname']),
+        'customer_name'      => strip_tags($orderOptions['name']),
+        'customer_phone'     => strip_tags($orderOptions['phone']),
+        'customer_email'     => strip_tags($orderOptions['email']),
+        'delivery'           => strip_tags($orderOptions['delivery'] ?? 0),
+        'payment'            => strip_tags($orderOptions['pay']),
+        'customer_thirdname' => strip_tags($orderOptions['thirdName'] ?? ''),
+        'comment'            => strip_tags($orderOptions['comment'] ?? ''),
+        'city'               => strip_tags($orderOptions['city']),
+        'street'             => strip_tags($orderOptions['street']),
+        'house'              => strip_tags((int) $orderOptions['home']),
+        'apartment'          => strip_tags((int) $orderOptions['aprt']),
         'product_id'         => $orderOptions['productId'],
-    ])) {
+    ]);
+
+    if (hasDBErrors($stmt->errorInfo())) {
+        errorLogsDB(__FUNCTION__, $stmt->errorInfo());
+    } else {
         $dbConnect = null;
         return setJSONStatus(['status' => 'success', 'message' => 'Спасибо за заказ!']);
     }

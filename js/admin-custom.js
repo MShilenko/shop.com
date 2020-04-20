@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function() {
         fetchForForm(addCategory, '/functions/addCategory.php', '/admin/categories/');
     }
     if (editCategory) {
-        fetchForForm(editCategory, '/functions/editCategory.php');
+        fetchForForm(editCategory, '/functions/editCategory.php', '/admin/categories/');
     }
     if (addProduct) {
         fetchForForm(addProduct, '/functions/addProduct.php', '/admin/products/');

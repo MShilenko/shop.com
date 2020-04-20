@@ -17,11 +17,11 @@ if (!empty($_POST)) {
 function editSettings(array $settings): string
 {
     $result = '';
-    $rowId = 1;
+    $rowId  = 1;
 
     if (isFieldsEmpty([
-        $settings['products_per_page'], 
-        $settings['city'], 
+        $settings['products_per_page'],
+        $settings['city'],
         $settings['street'],
         $settings['house'],
         $settings['min_price'],
@@ -32,20 +32,24 @@ function editSettings(array $settings): string
     $dbConnect = connectDB();
 
     $stmt = $dbConnect->prepare("
-        UPDATE settings SET products_per_page = :products_per_page, city = :city, street = :street, house = :house, metro = :metro, min_price = :min_price, delivery_cost = :delivery_cost 
+        UPDATE settings SET products_per_page = :products_per_page, city = :city, street = :street, house = :house, metro = :metro, min_price = :min_price, delivery_cost = :delivery_cost
             WHERE id = :id
     ");
 
-    if ($stmt->execute([
-        'products_per_page'        => htmlspecialchars($settings['products_per_page']),
-        'city'        => htmlspecialchars($settings['city']),
-        'street'        => htmlspecialchars($settings['street']),
-        'house'        => htmlspecialchars($settings['house']),
-        'min_price'        => htmlspecialchars($settings['min_price']),
-        'delivery_cost'        => htmlspecialchars($settings['delivery_cost']),
-        'metro'        => htmlspecialchars($settings['metro'] ?? ''),
-        'id'          => htmlspecialchars($rowId),
-    ])) {
+    $stmt->execute([
+        'products_per_page' => strip_tags($settings['products_per_page']),
+        'city'              => strip_tags($settings['city']),
+        'street'            => strip_tags($settings['street']),
+        'house'             => strip_tags($settings['house']),
+        'min_price'         => strip_tags($settings['min_price']),
+        'delivery_cost'     => strip_tags($settings['delivery_cost']),
+        'metro'             => strip_tags($settings['metro'] ?? ''),
+        'id'                => strip_tags($rowId),
+    ]);
+
+    if (hasDBErrors($stmt->errorInfo())) {
+        errorLogsDB(__FUNCTION__, $stmt->errorInfo());
+    } else {
         $dbConnect = null;
         return setJSONStatus(['status' => 'success', 'message' => 'Настройки обновлены']);
     }

@@ -25,7 +25,7 @@
           <legend class="page-add__small-title custom-form__title">Фотография товара</legend>
           <ul class="add-list">
             <li class="add-list__item add-list__item--add">
-              <input type="file" name="product-photo" id="product-photo" hidden="" accept="<?= ALLOWED_FILE_TYPES ?>">
+              <input data-product-img=<?= functions\getImageName($_GET['product_id']) ?> type="file" name="product-photo" id="product-photo" hidden="" accept="<?= ALLOWED_FILE_TYPES ?>">
               <label for="product-photo">Заменить фотографию</label>
             </li>
           </ul>

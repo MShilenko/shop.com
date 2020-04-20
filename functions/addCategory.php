@@ -29,12 +29,16 @@ function addCategory(array $categoryOptions, int $userId): string
             VALUES (:name, :slug, :description, :user_id)"
     );
 
-    if ($stmt->execute([
-        'name'        => htmlspecialchars($categoryOptions['name']),
-        'slug'        => htmlspecialchars($categoryOptions['slug']),
-        'description' => htmlspecialchars($categoryOptions['description'] ?? ''),
+    $stmt->execute([
+        'name'        => strip_tags($categoryOptions['name']),
+        'slug'        => strip_tags($categoryOptions['slug']),
+        'description' => strip_tags($categoryOptions['description'] ?? ''),
         'user_id'     => $userId,
-    ])) {
+    ]);
+
+    if (hasDBErrors($stmt->errorInfo())) {
+        errorLogsDB(__FUNCTION__, $stmt->errorInfo());
+    } else {
         $dbConnect = null;
         return setJSONStatus(['status' => 'success', 'message' => 'Категория добавлена']);
     }

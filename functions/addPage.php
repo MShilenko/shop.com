@@ -29,12 +29,16 @@ function addPage(array $pageOptions, int $userId): string
             VALUES (:name, :slug, :description, :id)"
     );
 
-    if ($stmt->execute([
-        'name'        => htmlspecialchars($pageOptions['name']),
-        'slug'        => htmlspecialchars($pageOptions['slug']),
+    $stmt->execute([
+        'name'        => strip_tags($pageOptions['name']),
+        'slug'        => strip_tags($pageOptions['slug']),
         'description' => htmlspecialchars_decode($pageOptions['description']),
         'id'          => $userId,
-    ])) {
+    ]);
+
+    if (hasDBErrors($stmt->errorInfo())) {
+        errorLogsDB(__FUNCTION__, $stmt->errorInfo());
+    } else {
         $dbConnect = null;
         return setJSONStatus(['status' => 'success', 'message' => 'Страница добавлена']);
     }
