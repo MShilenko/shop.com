@@ -306,7 +306,7 @@ function hasDBErrors(array $error): bool
  */
 function errorLogsDB(string $functionName,  array $error)
 {
-    $file    = $_SERVER['DOCUMENT_ROOT'] . 'include/error_log.txt';
+    $file    = $_SERVER['DOCUMENT_ROOT'] . '/include/error_log.txt';
     $current = file_get_contents($file);
     $current .= date('d.m.Y G:i:s') . ' | ' . $functionName . ' | ' . json_encode($error) . PHP_EOL;
     file_put_contents($file, $current);

@@ -17,7 +17,7 @@ function getAllOrdersForAdminPanel(): array
         'SELECT ord.id, CONCAT(ord.customer_surname, " ",ord.customer_name, " ", ord.customer_thirdname) AS customer, ord.customer_email, ord.customer_phone, ord.delivery, ord.payment, ord.comment, CONCAT("г. ", ord.city, ", ул. ", ord.street, ", д. ", ord.house, ", кв. ", ord.apartment) AS address, ord.processed, products.price AS product_price
             FROM orders AS ord 
             INNER JOIN products ON ord.product_id = products.id
-            ORDER BY processed'
+            ORDER BY processed, id DESC'
     );
 
     $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);

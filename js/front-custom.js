@@ -39,7 +39,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function addQueryString(elements, submitButton, defaultValues = {}, requiredParameter = '') {
         let searchParams = new URLSearchParams(window.location.search);
-        let getEvent = defaultValues ?? {};
+        //let getEvent = defaultValues ?? {};
+        let getEvent = {};
+        if (defaultValues.length > 0) {
+            getEvent = defaultValues;
+        }
         for (let elem of elements) {
             elem.addEventListener('change', async (event) => {
                 if (event.target.type == 'checkbox' || event.target.type == 'radio') {

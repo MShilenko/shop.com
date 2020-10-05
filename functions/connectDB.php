@@ -22,3 +22,10 @@ function connectDB()
 
     return $connection;
 }
+
+try {
+    connectDB();
+} catch (\Exception $e) {
+    echo '<div class="db_error">Произошла ошибка при подключении к БД. ' . $e->getMessage() . '</div>';
+    die;
+}
